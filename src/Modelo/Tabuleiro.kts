@@ -17,6 +17,7 @@ class Tabuleiro( val qdLinhas: Int, val qdColunas: Int, qdMinas: Int){
             campo.add(arraylist())
         for(coluna in 0 until qdColunas)
         var novocampo = campo (linha, coluna)
+        novocampo.onEvento(this :: verificarVitoriaOuDerrota)
         campos[linha].add(novocampo)
     }
     private fun associarVizinhos() {
@@ -44,15 +45,37 @@ class Tabuleiro( val qdLinhas: Int, val qdColunas: Int, qdMinas: Int){
         while (qtMinasAtual < this.qdMinas){
             linhaSorteada = gerador.nextInt(qdLinhas)
             colunaSorteada = gerador.nextInt(qdcolunas) // colocando as minas até numero maximo de minas
-            // como nao colocar duas minas no mesmo local
 
-        }
-
-        fun forEachCampo(callback: (Campo) -> Unit){
-            campos.forEach {linha -> linha.forEach(callback)} //percorrer o tabuleiro todo
-
+            val campoMinado = campos[linhaSorteada][colunaSorteada]// se o campo tiver seguro, coloque uma mina
+            if (campoMinado.seguro) {
+                campoMinado.minar()
+                qdMinasAtual++
+            }
         }
     }
+    private fun objetivoAlcancado(): Boolean{
+        var jogadorGanhou = true
+        forEachCampo { if (!it.objetivoAlcancado) jogadorGanhou = false }
+        return jogadorGanhou
+    }
+    private fun verificarVitoriaOuDerrota(campo: Campo, evento: CampoEvento)
+    if( evento == CampoEvento.EXPLOSAO){
+        callbacks.forEach { it ( TabuleiroEvento.DERROTA ) }
+        else if (objetivoAlcancado()){
+            callbacks.forEach { it ( TabuleiroEvento.VITORIA) }
+        }
+    }
+    fun forEachCampo(callback: (Campo) -> Unit){
+        campos.forEach {linha -> linha.forEach(callback)} //percorrer o tabuleiro todo
+    }
+    fun onEvento(callback: (TabuleiroEvento) -> Unit){
+        callbacks.add(callback)
+    }
+    fun reiniciar(){
+        forEachCampo { it.reiniciar() }
+        sortearMinas()
+    }
+}
 
 
 
