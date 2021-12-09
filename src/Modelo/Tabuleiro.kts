@@ -1,6 +1,8 @@
 import javax.security.sasl.AuthorizeCallback
+import kotlin.random.Random
 
 enum class TabuleiroEvento { VITORIA, DERROTA }
+
 class Tabuleiro( val qdLinhas: Int, val qdColunas: Int, qdMinas: Int){
     private val campos = Arraylist<Arraylis<Campo>>()
     private val  callbacks = Arraylist<(TabuleiroEvento) -> Unit>()
@@ -17,13 +19,31 @@ class Tabuleiro( val qdLinhas: Int, val qdColunas: Int, qdMinas: Int){
         var novocampo = campo (linha, coluna)
         campos[linha].add(novocampo)
     }
-    private fun associarVizinhos(){
+    private fun associarVizinhos() {
+        forEachCampo { associarVizinhos(it) }
+    }
+    private fun associarVizinhos(campo :campo){
+        val(linha, coluna) = campo
+        val linhas = arrayOf(linha - 1, linha, linha + 1)
+        val colunas = arrayOf(coluna - 1, coluna, linha + 1)
+        //cuidado com casa vazia
+    }
+}
+private fun sortearMinas(){
+    val gerador = Random()
+
+    var linhaSorteada = -1
+    var colunaSorteada = -1
+    var qdMinasAtual = 0
+
+    while (qtMinasAtual < this.qdMinas){
+        linhaSorteada = gerador.nextInt(qdLinhas)
+        colunaSorteada = gerador.nextInt(qdcolunas) // colocando as minas até numero maximo de minas
+        // como nao colocar duas minas no mesmo local
 
     }
-    private fun sortearMinas(){
-    }
 
-    fun ForEachCampo(callback: (Campo) -> Unit){
+    fun forEachCampo(callback: (Campo) -> Unit){
         campos.forEach {linha -> linha.forEach(callback)} //percorrer o tabuleiro todo
 
     }
