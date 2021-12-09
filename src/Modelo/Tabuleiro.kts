@@ -14,7 +14,7 @@ class Tabuleiro( val qdLinhas: Int, val qdColunas: Int, qdMinas: Int){
         for(linha in 0 until qdLinhas)
             campo.add(arraylist())
         for(coluna in 0 until qdColunas)
-            var novocampo = campo (linha, coluna)
+        var novocampo = campo (linha, coluna)
         campos[linha].add(novocampo)
     }
     private fun associarVizinhos(){
