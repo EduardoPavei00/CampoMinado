@@ -1,8 +1,8 @@
-package Model
+package models
 
-enum class CampoEvento { ABERTURA, MARCACAO, DESMACAÇAO, EXPLOSAO, REINICIALIZACAO }
+enum class CampoEvento { ABERTURA, MARCACAO, DESMACACAO, EXPLOSAO, REINICIALIZACAO }
 
-data class Campo (val linha:Int,val coluna: Int ){
+data class Campo (val linha:Int, val coluna: Int ) {
 
     private val vizinhos = ArrayList<Campo>()
     private val callbacks = ArrayList<(Campo, CampoEvento) -> Unit>()//funçoes que vao ser disparada depois do evento acontecer
@@ -40,10 +40,11 @@ data class Campo (val linha:Int,val coluna: Int ){
             }
         }
         fun altererarMarcacao() {
-            if (fechado){
-        marcado = !marcado
-        val evento = if (marcado) CampoEvento.MARCACAO else CampoEvento.DESMACAÇAO
-        callbacks.forEach { it(this, evento) }
+            if (fechado) {
+                marcado = !marcado
+                val evento = if (marcado) CampoEvento.MARCACAO else CampoEvento.DESMACACAO
+                callbacks.forEach { it(this, evento) }
+            }
         }
     }
 
